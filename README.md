@@ -106,3 +106,8 @@ For the algorithm to efficiently compute the ideal actions, we should use certai
 Pluribus paper: https://www.science.org/doi/10.1126/science.aay2400
 
 https://github.com/ozzi7/Poker-MCCFRM/tree/master
+
+## Potential Improvements
+
+- Instead of using a Card class to represent a unique card, I could use an integer instead, similar to what they do [here](https://github.com/worldveil/deuces/blob/master/deuces/card.py)
+- I could write this in another language, like C++ or Rust, to improve computation speed
