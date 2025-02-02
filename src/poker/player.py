@@ -1,6 +1,6 @@
 from typing import List
 
-from game.card import Card
+from poker.card import Card
 
 
 class Player:

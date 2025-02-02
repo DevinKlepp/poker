@@ -1,6 +1,6 @@
 from random import shuffle
 from typing import List
-from game.card import get_all_suits, get_all_ranks, Card
+from poker.card import get_all_suits, get_all_ranks, Card
 
 
 class Deck:
@@ -19,12 +19,12 @@ class Deck:
         shuffle(self.cards)
 
     def deal(self) -> Card:
-        """Deals one card from the deck, reducing the total"""
-        self.cards.pop()
+        """Returns one card from the deck, reducing the total"""
         self.total_cards -= 1
+        return self.cards.pop()
 
-    def get_deck(self):
-        """Initializes a fresh deck of 52 cards"""
+    def get_deck(self) -> List[Card]:
+        """Returns a fresh deck of 52 cards"""
         suits = get_all_suits()
         ranks = get_all_ranks()
         deck: List[Card] = []
