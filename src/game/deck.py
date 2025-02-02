@@ -32,3 +32,5 @@ class Deck:
         for rank in ranks:
             for suit in suits:
                 deck.append(Card(rank, suit))
+
+        return deck
