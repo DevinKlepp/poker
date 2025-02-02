@@ -12,7 +12,10 @@ My attempt at creating a No-Limit Texas Hold'em poker bot using Monte Carlo coun
 
 From [PokerStars](https://www.pokerstars.com/poker/games/texas-holdem/):
 
-# No-Limit Texas Hold'em Rules (For Python Implementation)
+<details>
+<summary>Rules</summary>
+
+## No-Limit Texas Hold'em Rules (For Python Implementation)
 
 ## 1. Rules of the Game
 
@@ -83,7 +86,9 @@ From [PokerStars](https://www.pokerstars.com/poker/games/texas-holdem/):
   - Standard **poker hand rankings** determine the winner.
   - **Ties split the pot**.
 
-### Abstraction Optimizations
+</details>
+
+## Abstraction Optimizations
 
 ## Algorithm
 
