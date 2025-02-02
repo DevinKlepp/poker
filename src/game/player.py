@@ -10,6 +10,11 @@ class Player:
     """
 
     def __init__(self, name: str, chips: int):
+        if not name:
+            raise Exception("A players name cannot be empty")
+        if not chips:
+            raise Exception("A player cannot start with 0 chips")
+
         self.name: str = name
         self.chips: int = chips
         self.cards: List[Card] = []

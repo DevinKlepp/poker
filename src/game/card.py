@@ -30,6 +30,11 @@ class Card:
     """
 
     def __init__(self, rank: str, suit: str):
+        if not rank in get_all_ranks():
+            raise Exception(f"The rank {rank} isn't found in the list of all ranks")
+        if not suit in get_all_suits():
+            raise Exception(f"The suit {suit} isn't found in the set of all suits")
+
         self.rank: str = rank
         self.suit: str = suit
 
