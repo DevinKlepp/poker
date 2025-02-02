@@ -82,9 +82,20 @@ From [PokerStars](https://www.pokerstars.com/poker/games/texas-holdem/):
 
 - **If everyone folds except one player →** That player wins the pot.
 - **If showdown occurs:**
+
   - Each player makes the **best 5-card hand** from **hole cards + community cards**.
   - Standard **poker hand rankings** determine the winner.
   - **Ties split the pot**.
+
+---
+
+## 6. How the Game Continues
+
+- **If the game is to continue:**
+  - All the roles are shifted to the left, in a clock-wise manner, from the dealer.
+  - BB becomes SB, SB becomes dealer, dealer becomes a regular player.
+  - **If there are only 2 players:**
+    - The SB becomes the dealer, and the first to action is the BB.
 
 </details>
 
