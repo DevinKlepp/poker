@@ -18,6 +18,18 @@ class Player:
         self.name: str = name
         self.chips: int = chips
         self.cards: List[Card] = []
+        self.current_bet = 0  # Tracks bets for the round
+        self.in_hand = True  # Whether player is still active in the hand
+        self.all_in = False
+
+    def bet(self, amount: int) -> int:
+        bet_amount = amount
+        if amount >= self.chips:
+            bet_amount = self.chips  # Go all-in if not enough chips
+            self.all_in = True
+        self.chips -= bet_amount
+        self.current_bet += bet_amount
+        return bet_amount
 
     def __repr__(self):
         print(f"Name: {self.name}, Chips: {self.chips}")
