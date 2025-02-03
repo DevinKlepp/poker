@@ -1,3 +1,5 @@
+"""Represents a deck of 52 playing cards."""
+
 from random import shuffle
 from typing import List
 from poker.card import get_all_suits, get_all_ranks, Card

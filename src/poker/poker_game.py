@@ -1,11 +1,16 @@
-from typing import List, Dict
+"""A module for running a game of No-Limit Texas Hold'em poker."""
+
+from enum import Enum
+
+from typing import List, Tuple
 from poker.card import Card
 from poker.deck import Deck
 from poker.player import Player
-from enum import Enum
 
 
 class Action(Enum):
+    """Represents a player's action in a game of poker."""
+
     FOLD = "fold"
     CALL = "call"
     RAISE = "raise"
@@ -27,6 +32,7 @@ class PokerGame:
         self.players = players
         self.active_players = players.copy()
         self.all_in_players = []
+        self.players_excluded_from_winnings = {}
 
         # Initialize Deck
         self.deck = Deck()
@@ -34,9 +40,9 @@ class PokerGame:
 
         # Initialize Pots
         self.pot = 0
-        self.side_pots: Dict[int, int] = (
-            {}
-        )  # Key: max bet per player, Value: side pot total
+        # Side pots are stored in order of creation, with the
+        # players and the amount they contributed
+        self.side_pots: List[Tuple[List[Player], int]] = []
 
         # Initialize Blinds
         self.big_blind = big_blind
@@ -61,7 +67,7 @@ class PokerGame:
         self.handle_bet(small_blind_player, self.small_blind)
         self.handle_bet(big_blind_player, self.big_blind)
 
-        self.current_bet = max(small_blind_bet, big_blind_bet)
+        # self.current_bet = max(small_blind_bet, big_blind_bet)
 
     def deal_hole_cards(self):
         """Deals two private cards to each player."""
@@ -70,6 +76,8 @@ class PokerGame:
 
     def betting_round(self):
         """Handles a single round of betting."""
+        # Should change this to: while len(self.active_players) > 1 and
+        #
         for player in self.active_players:
             if player.all_in:
                 continue  # All-in players don't act
@@ -133,6 +141,43 @@ class PokerGame:
         for _ in range(count):
             self.community_cards.append(self.deck.deal())
 
+    def compare_hands(self, players: List[Player]) -> List[Player]:
+        """Compares the hands of the players and returns the winners.
+
+        Removes players from contention for future side pots or the main
+        pot if they lost the current comparison.
+        """
+        return []  # Placeholder
+
+    def resolve_side_pots(self):
+        """Resolves side pots among the winning players for that side pot."""
+        while len(self.side_pots) > 0:
+            side_pot = self.side_pots.pop()
+            # Number of chips in the side pot is the bet amount x number of players in the side pot
+            side_pot_chips = side_pot[1] * len(self.side_pots[0])
+            winners = self.compare_hands(side_pot[0])
+
+            if len(winners) > 1:
+                # Divide the pot among the winners
+                split_pot = side_pot_chips // len(winners)
+                for winner in winners:
+                    winner.chips += split_pot
+            else:
+                # Winner takes the pot
+                winners[0].chips += side_pot_chips
+
+    def resolve_main_pot(self):
+        """Resolves the main pot among the winning players."""
+        winners = self.compare_hands(self.active_players + self.all_in_players)
+        if len(winners) > 1:
+            # Divide the pot among the winners
+            split_pot = self.pot // len(winners)
+            for winner in winners:
+                winner.chips += split_pot
+        else:
+            # Winner takes the pot
+            winners[0].chips += self.pot
+
     def resolve_showdown(self):
         """Determines the winner at showdown, handling side pots."""
         all_contenders = self.active_players + self.all_in_players
@@ -143,31 +188,50 @@ class PokerGame:
             print(f"{winner.name} wins the entire pot of {self.pot} chips!")
             return
 
-        # Sort players by the amount they contributed (smallest first for side pots)
-        sorted_players = sorted(all_contenders, key=lambda p: p.current_bet)
+        # Resolve side pots if they are present
+        if len(self.side_pots > 0):
+            self.resolve_side_pots()
 
-        for i, player in enumerate(sorted_players):
-            if player.in_hand:
-                pot_share = (
-                    sum(self.side_pots.values())
-                    if i == len(sorted_players) - 1
-                    else self.side_pots[player.current_bet]
-                )
-                player.chips += pot_share
-                print(f"{player.name} wins {pot_share} chips!")
+        # Resolve main pot
+        self.resolve_main_pot()
 
     def next_hand(self):
         """Prepares for the next hand."""
-        self.dealer_index = (self.dealer_index + 1) % len(self.players)
-        self.pot = 0
-        self.current_bet = 0
-        self.community_cards = []
-        self.side_pots.clear()
+        # Reset Player State
+        for player in self.players:
+            player.cards = []
+            player.current_bet = 0
+            player.in_hand = True
+            player.all_in = False
+
+        self.active_players = self.players.copy()
+        self.all_in_players = []
+        self.players_excluded_from_winnings = {}
+
+        # Initialize Deck
         self.deck = Deck()
+        self.community_cards: List[Card] = []
+
+        # Reset Pots
+        self.pot = 0
+        self.side_pots = []
+
+        # Reset Bet
+        self.current_bet = 0
+
+        # Increment Dealer Index
+        self.dealer_index = (self.dealer_index + 1) % len(self.players)
+
+        # Assign Blinds and Deal Hole Cards
+        self.assign_blinds()
         self.deal_hole_cards()
 
 
 # Example usage
-players = [Player("Alice", 1000), Player("Bob", 50), Player("Charlie", 200)]
-game = PokerGame(players, big_blind=50)
+starting_players: List[Player] = [
+    Player("Alice", 1000),
+    Player("Bob", 50),
+    Player("Charlie", 200),
+]
+game = PokerGame(starting_players, big_blind=50)
 game.play_hand()

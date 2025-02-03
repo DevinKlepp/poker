@@ -1,11 +1,15 @@
+"""This module contains the Card class, which represents a playing card."""
+
 from typing import List, Set
 
 
 def get_all_suits() -> Set[str]:
+    """Returns a set of all possible suits in a deck of cards."""
     return {"hearts", "diamonds", "clubs", "spades"}
 
 
 def get_all_ranks() -> List[str]:
+    """Returns a list of all possible ranks in a deck of cards."""
     return [
         "2",
         "3",
@@ -30,7 +34,7 @@ class Card:
     """
 
     def __init__(self, rank: str, suit: str):
-        if not rank in get_all_ranks():
+        if rank not in get_all_ranks():
             raise Exception(f"The rank {rank} isn't found in the list of all ranks")
         if not suit in get_all_suits():
             raise Exception(f"The suit {suit} isn't found in the set of all suits")
@@ -39,4 +43,4 @@ class Card:
         self.suit: str = suit
 
     def __repr__(self):
-        print(f"{self.rank} of {self.suit}")
+        return f"{self.rank} of {self.suit}"

@@ -97,6 +97,18 @@ From [PokerStars](https://www.pokerstars.com/poker/games/texas-holdem/):
   - **If there are only 2 players:**
     - The SB becomes the dealer, and the first to action is the BB.
 
+## 7. Side Pots
+
+Side pots were pretty tricky to implement, here are the guidelines:
+
+In poker, when multiple side pots are created, they are resolved in the following order:
+
+Last Side Pot First: The side pot created by the latest all-in bet is resolved first.
+Work Backwards: After the first side pot is awarded, the process continues with the next-to-last side pot, and so on, until all side pots are resolved.
+Main Pot Last: Finally, the main pot is awarded to the player with the best hand among all players who contributed to it.
+Example:
+Eligibility: Only players who contributed to a particular side pot are eligible to win it.
+
 </details>
 
 ## Abstraction Optimizations
@@ -117,6 +129,16 @@ For the algorithm to efficiently compute the ideal actions, we should use certai
 Pluribus paper: https://www.science.org/doi/10.1126/science.aay2400
 
 https://github.com/ozzi7/Poker-MCCFRM/tree/master
+
+## Todo
+
+- Add logic to compare hands to decide who wins a hand, account for ties
+  - Odd chip remaining normally goes to the button (Person before SB), but we may be able to just let the dealer have it (Forget about it)
+- Correct side-pot distribution logic
+- Add early end if all players but one fold
+- Treat players as indexes rather than the player object
+- Add capability to reset the game to a new hand
+- Fix next hand method
 
 ## Potential Improvements
 

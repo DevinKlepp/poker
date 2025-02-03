@@ -1,12 +1,17 @@
-from typing import List
+"""Player module."""
 
+from typing import List
 from poker.card import Card
 
 
 class Player:
-    """A Player represents a poker player
+    """A Player represents a poker player.
 
-    They have a name, an amount of chips, and private cards
+    They have a name, an amount of chips, and private cards.
+
+    Args:
+        name (str): The player's name
+        chips (int): The amount of chips the player has
     """
 
     def __init__(self, name: str, chips: int):
@@ -23,6 +28,13 @@ class Player:
         self.all_in = False
 
     def bet(self, amount: int) -> int:
+        """Player bets a specified amount of chips.
+
+        If the player doesn't have enough chips, they go all-in.
+
+        Args:
+            amount (int): The amount to bet
+        """
         bet_amount = amount
         if amount >= self.chips:
             bet_amount = self.chips  # Go all-in if not enough chips
@@ -32,4 +44,4 @@ class Player:
         return bet_amount
 
     def __repr__(self):
-        print(f"Name: {self.name}, Chips: {self.chips}")
+        return f"Name: {self.name}, Chips: {self.chips}"

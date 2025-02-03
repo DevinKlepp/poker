@@ -1,3 +1,5 @@
+"""This module contains the Action enum class."""
+
 from enum import Enum
 
 
